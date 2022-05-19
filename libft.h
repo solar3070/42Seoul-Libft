@@ -6,7 +6,7 @@
 /*   By: hyejlee <hyejlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 00:28:04 by hyejlee           #+#    #+#             */
-/*   Updated: 2022/05/20 00:28:05 by hyejlee          ###   ########.fr       */
+/*   Updated: 2022/05/20 03:00:22 by hyejlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ char		**ft_split(char const *s, char c);
 char		*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char		*ft_strrchr(const char *s, int c);
 int			ft_strncmp(const char *s1, const char *s2, size_t len);
+void		ft_striteri(char *s, void (*f)(unsigned int, char*));
 void		*ft_memset(void *ptr, int value, size_t num);
 void		*ft_memcpy(void *dst, const void *src, size_t num);
 void		*ft_memccpy(void *dst, const void *src, int c, size_t num);

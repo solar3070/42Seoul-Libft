@@ -12,32 +12,55 @@
 
 #include "libft.h"
 
+int	ft_getstart(const char *s1, const char *set)
+{
+	size_t	len;
+	size_t	i;
+
+	len = ft_strlen(s1);
+	i = 0;
+	while (i < len)
+	{
+		if (ft_strchr(set, s1[i]) == 0)
+			break ;
+		i++;
+	}
+	return (i);
+}
+
+int	ft_getend(const char *s1, const char *set)
+{
+	size_t	len;
+	size_t	i;
+
+	len = ft_strlen(s1);
+	i = 0;
+	while (i < len)
+	{
+		if (ft_strchr(set, s1[len - i - 1]) == 0)
+			break ;
+		i++;
+	}
+	return (len - i);
+}
+
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	char	*start_ptr;
-	char	*end_ptr;
-	char	*answer;
+	int		start;
+	int		end;
+	char	*newstr;
 
-	if (!s1)
+	if (s1 == 0)
 		return (0);
-	if (!set)
+	if (set == 0)
 		return (ft_strdup(s1));
-	start_ptr = (char *)s1;
-	while (*start_ptr && ft_strchr(set, *start_ptr))
-		start_ptr++;
-	if (!(*start_ptr))
+	start = ft_getstart(s1, set);
+	end = ft_getend(s1, set);
+	if (start >= end)
 		return (ft_strdup(""));
-	end_ptr = (char *)s1;
-	while (*end_ptr)
-		end_ptr++;
-	end_ptr--;
-	while (start_ptr < end_ptr && ft_strchr(set, *end_ptr))
-		end_ptr--;
-	if (start_ptr >= end_ptr)
-		return (ft_strdup(""));
-	answer = (char *)malloc((end_ptr - start_ptr + 1) + 1);
-	if (!answer)
+	newstr = (char *)malloc(sizeof(char) * (end - start + 1));
+	if (newstr == 0)
 		return (0);
-	ft_strlcpy(answer, start_ptr, (end_ptr - start_ptr + 1) + 1);
-	return (answer);
+	ft_strlcpy(newstr, s1 + start, end - start + 1);
+	return (newstr);
 }

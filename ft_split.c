@@ -10,63 +10,84 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "libft.h"
 
-int	word_count(char const *str, char c)
+int	is_sep(char s, char c)
 {
-	int	cnt;
-
-	cnt = 0;
-	while (*str)
-	{
-		while (*str == c)
-			str++;
-		if (*str == '\0')
-			break ;
-		while (*str != c && *str != '\0')
-			str++;
-		cnt++;
-	}
-	return (cnt);
+	return (s == c);
 }
 
-char	*split_str(char const *start, int len)
+int	count_words(char const *s, char c)
 {
-	int		i;
-	char	*str;
+	int	i;
+	int	words_num;
 
-	str = (char *) malloc(sizeof(char) * (len + 1));
 	i = 0;
-	while (i < len)
-		str[i++] = *start++;
-	str[i] = '\0';
-	return (str);
-}
-
-char	**ft_split(char const *str, char c)
-{
-	char		**arr;
-	char const	*start;
-	int			len;
-	int			i;
-
-	arr = (char **) malloc(sizeof(char *) * (word_count(str, c) + 1));
-	i = 0;
-	while (*str)
+	words_num = 0;
+	if (!s[0])
+		return (0);
+	while (s[i] && is_sep(s[i], c))
+		++i;
+	while (s[i])
 	{
-		while (*str == c)
-			str++;
-		if (*str == '\0')
-			break ;
-		start = str;
-		len = 0;
-		while (*str != c && *str != '\0')
+		if (is_sep(s[i], c))
 		{
-			len++;
-			str++;
+			words_num++;
+			while (s[i] && is_sep(s[i], c))
+				++i;
+			continue ;
 		}
-		arr[i++] = split_str(start, len);
+		++i;
 	}
-	arr[i] = 0;
-	return (arr);
+	if (s[i - 1] != c)
+		words_num++;
+	return (words_num);
+}
+
+char	*ft_make_str(char *str, char c)
+{
+	char	*res;
+	int		res_len;
+	int		i;
+
+	res_len = 0;
+	while (*(str + res_len) && !is_sep(str[res_len], c))
+		++res_len;
+	res = (char *)malloc(sizeof(char) * (res_len + 1));
+	if (!res)
+		return (0);
+	i = 0;
+	while (i < res_len)
+	{
+		res[i] = str[i];
+		++i;
+	}
+	res[i] = '\0';
+	return (res);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**res;
+	int		i;
+	int		res_i;
+
+	if (s == 0)
+		return (0);
+	res = (char **)malloc(sizeof(char *) * (count_words(s, c) + 1));
+	if (!res)
+		return (0);
+	i = 0;
+	res_i = 0;
+	while (s[i])
+	{
+		while (s[i] && is_sep(s[i], c))
+			++i;
+		if (s[i] && !is_sep(s[i], c))
+			res[res_i++] = ft_make_str((char *)(s + i), c);
+		while (s[i] && !is_sep(s[i], c))
+			++i;
+	}
+	res[res_i] = 0;
+	return (res);
 }

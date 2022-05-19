@@ -21,26 +21,24 @@ int	ft_isspace(char ch)
 
 int	ft_atoi(const char *str)
 {
-	long	nbr;
-	long	sign;
-	size_t	i;
+	int		pos;
+	int		flag;
+	size_t	res;
 
-	while (*str != '\0' && ft_isspace(*str))
-		str++;
-	sign = 1;
-	while (*str == '+' || *str == '-')
-		if (*str++ == '-')
-			sign *= -1;
-	nbr = 0;
-	i = 0;
-	while (str[i] != '\0' && str[i] >= '0' && str[i] <= '9')
+	pos = 0;
+	while (str[pos] != '\0' && ft_isspace(str[pos]))
+		++pos;
+	flag = 1;
+	if (str[pos] == '-')
+		flag = -1;
+	if (str[pos] == '-' || str[pos] == '+')
+		++pos;
+	res = 0;
+	while (str[pos] != '\0' && str[pos] >= '0' && str[pos] <= '9')
 	{
-		nbr = (nbr * 10) + (str[i] - '0');
-		if (nbr > 2147483647 && sign == 1)
-			return (-1);
-		if (nbr > 2147483648 && sign == -1)
-			return (0);
-		i++;
+		res *= 10;
+		res += (str[pos] - '0');
+		++pos;
 	}
-	return (sign * nbr);
+	return (res * flag);
 }
