@@ -6,88 +6,71 @@
 /*   By: hyejlee <hyejlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 00:59:52 by hyejlee           #+#    #+#             */
-/*   Updated: 2022/05/20 02:27:58 by hyejlee          ###   ########.fr       */
+/*   Updated: 2022/05/21 10:43:08 by hyejlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	is_sep(char s, char c)
+static int	word_count(char const *str, char c)
 {
-	return (s == c);
-}
+	int	cnt;
 
-int	count_words(char const *s, char c)
-{
-	int	i;
-	int	words_num;
-
-	i = 0;
-	words_num = 0;
-	if (!s[0])
-		return (0);
-	while (s[i] && is_sep(s[i], c))
-		++i;
-	while (s[i])
+	cnt = 0;
+	while (*str)
 	{
-		if (is_sep(s[i], c))
-		{
-			words_num++;
-			while (s[i] && is_sep(s[i], c))
-				++i;
-			continue ;
-		}
-		++i;
+		while (*str == c)
+			str++;
+		if (*str == '\0')
+			break ;
+		while ((*str != c) && *str != '\0')
+			str++;
+		cnt++;
 	}
-	if (s[i - 1] != c)
-		words_num++;
-	return (words_num);
+	return (cnt);
 }
 
-char	*ft_make_str(char *str, char c)
+static char	*split_str(char const *start, int len)
 {
-	char	*res;
-	int		res_len;
 	int		i;
+	char	*str;
 
-	res_len = 0;
-	while (*(str + res_len) && !is_sep(str[res_len], c))
-		++res_len;
-	res = (char *)malloc(sizeof(char) * (res_len + 1));
-	if (!res)
+	str = (char *) malloc(sizeof(char) * (len + 1));
+	if (!str)
 		return (0);
 	i = 0;
-	while (i < res_len)
-	{
-		res[i] = str[i];
-		++i;
-	}
-	res[i] = '\0';
-	return (res);
+	while (i < len)
+		str[i++] = *start++;
+	str[i] = '\0';
+	return (str);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**res;
-	int		i;
-	int		res_i;
+	char const	*start;
+	char		**arr;
+	int			len;
+	int			i;
 
-	if (s == 0)
-		return (0);
-	res = (char **)malloc(sizeof(char *) * (count_words(s, c) + 1));
-	if (!res)
+	arr = (char **) malloc(sizeof(char *) * (word_count(s, c) + 1));
+	if (!arr)
 		return (0);
 	i = 0;
-	res_i = 0;
-	while (s[i])
+	while (*s)
 	{
-		while (s[i] && is_sep(s[i], c))
-			++i;
-		if (s[i] && !is_sep(s[i], c))
-			res[res_i++] = ft_make_str((char *)(s + i), c);
-		while (s[i] && !is_sep(s[i], c))
-			++i;
+		while (*s == c)
+			s++;
+		if (*s == '\0')
+			break ;
+		start = s;
+		len = 0;
+		while ((*s != c) && *s != '\0')
+		{
+			len++;
+			s++;
+		}
+		arr[i++] = split_str(start, len);
 	}
-	res[res_i] = 0;
-	return (res);
+	arr[i] = 0;
+	return (arr);
 }

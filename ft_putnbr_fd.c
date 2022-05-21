@@ -6,39 +6,36 @@
 /*   By: hyejlee <hyejlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 00:21:55 by hyejlee           #+#    #+#             */
-/*   Updated: 2022/05/21 08:46:23 by hyejlee          ###   ########.fr       */
+/*   Updated: 2022/05/21 09:05:51 by hyejlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	print_num(int n, int fd)
+void	ft_putnbr_fd(int n, int fd)
 {
-	char c;
+	char	num;
 
-	if (n >= 10)
-	{
-		print_num(n / 10, fd);
-		print_num(n % 10, fd);
-	}
-	else if (n >= 0)
-	{
-		c = n + 48;
-		write(fd, &c, 1);
-	}
-	else
-	{
-		write(fd, "-", 1);
-		print_num(n * -1, fd);
-	}
-}
-
-void	ft_putnbr(int n, int fd)
-{
-if (fd < 0)
+	if (fd < 0)
 		return ;
 	if (n == -2147483648)
-		write(1, "-2147483648", 11);
+	{
+		write(fd, "-2147483648", 11);
+		return ;
+	}
+	if (n < 0)
+	{
+		n *= -1;
+		write(fd, "-", 1);
+	}
+	if (n <= 9)
+	{
+		num = '0' + n;
+		write(fd, &num, 1);
+	}
 	else
-		print_num(n, fd);
+	{
+		ft_putnbr_fd(n / 10, fd);
+		ft_putnbr_fd(n % 10, fd);
+	}
 }

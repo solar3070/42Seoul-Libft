@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-static int	get_number_digits(int n)
+static int	get_digits(int n)
 {
 	int		answer;
 
@@ -27,7 +27,7 @@ static int	get_number_digits(int n)
 	return (answer);
 }
 
-static int	get_abs_num(int num)
+static int	get_abs(int num)
 {
 	if (num < 0)
 		return (num * -1);
@@ -37,24 +37,24 @@ static int	get_abs_num(int num)
 char	*ft_itoa(int n)
 {
 	int		len;
-	int		minus_flag;
+	int		sign;
 	char	*result;
 
-	minus_flag = 1;
+	sign = 1;
 	if (n < 0)
-		minus_flag *= -1;
-	len = get_number_digits(n);
+		sign *= -1;
+	len = get_digits(n);
 	result = (char *)malloc(len + 1);
 	if (!result)
 		return (0);
 	result[len--] = 0;
 	while (len >= 0)
 	{
-		result[len] = get_abs_num(n % 10) + '0';
+		result[len] = get_abs(n % 10) + '0';
 		n = n / 10;
 		len--;
 	}
-	if (minus_flag == -1)
+	if (sign == -1)
 		result[0] = '-';
 	return (result);
 }
