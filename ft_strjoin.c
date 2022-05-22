@@ -30,6 +30,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (!ptr)
 		return (0);
 	ft_memcpy(ptr, s1, s1_len);
-	ft_strlcpy(ptr + s1_len, (char *)s2, s2_len + 1);
+	ft_strlcpy(ptr + s1_len, s2, s2_len + 1);
 	return (ptr);
 }

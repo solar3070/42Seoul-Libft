@@ -47,7 +47,7 @@ char	*ft_itoa(int n)
 	result = (char *)malloc(len + 1);
 	if (!result)
 		return (0);
-	result[len--] = 0;
+	result[len--] = '\0';
 	while (len >= 0)
 	{
 		result[len] = get_abs(n % 10) + '0';
